@@ -162,7 +162,7 @@
         min-height: 1rem;
       }
 
-      button:not(#theme-toggle) {
+      button:not(#theme-toggle):not(#sound-toggle) {
         padding: 1rem 2rem;
         font-size: 1rem;
         font-family: 'Press Start 2P', system-ui, sans-serif;
@@ -178,35 +178,46 @@
         opacity: 0;
       }
       
-      button:not(#theme-toggle):hover,
-      button:not(#theme-toggle):focus {
+      button:not(#theme-toggle):not(#sound-toggle):hover,
+      button:not(#theme-toggle):not(#sound-toggle):focus {
         background-color: var(--color-secondary);
         color: #fff;
         box-shadow: 0 0 20px rgba(var(--color-secondary-rgb), 0.8), inset 0 0 10px rgba(var(--color-secondary-rgb), 0.8);
       }
       
-      button:not(#theme-toggle):focus-visible {
+      button:not(#theme-toggle):not(#sound-toggle):focus-visible {
         outline: 3px solid rgba(var(--color-secondary-rgb), 0.8);
         outline-offset: 4px;
       }
 
-      /* ===== THEME TOGGLE BUTTON ===== */
-      #theme-toggle {
+      /* ===== TOP-LEVEL TOGGLE BUTTONS ===== */
+      #theme-toggle,
+      #sound-toggle {
         position: fixed;
         top: 1rem;
-        right: 1rem;
         padding: 0.5rem 0.75rem;
         font-size: 0.45rem;
         font-family: 'Press Start 2P', system-ui, sans-serif;
         background-color: transparent;
-        color: var(--color-primary);
-        border: 2px solid var(--color-primary);
         cursor: pointer;
         text-transform: uppercase;
-        box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3);
         transition: all 0.3s;
         z-index: 1000;
         line-height: 1.4;
+      }
+
+      #theme-toggle {
+        right: 1rem;
+        color: var(--color-primary);
+        border: 2px solid var(--color-primary);
+        box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3);
+      }
+
+      #sound-toggle {
+        left: 1rem;
+        color: var(--color-secondary);
+        border: 2px solid var(--color-secondary);
+        box-shadow: 0 0 10px rgba(var(--color-secondary-rgb), 0.3);
       }
 
       #theme-toggle:hover,
@@ -216,8 +227,20 @@
         box-shadow: 0 0 20px rgba(var(--color-primary-rgb), 0.8);
       }
 
+      #sound-toggle:hover,
+      #sound-toggle:focus {
+        background-color: var(--color-secondary);
+        color: #000;
+        box-shadow: 0 0 20px rgba(var(--color-secondary-rgb), 0.8);
+      }
+
       #theme-toggle:focus-visible {
         outline: 3px solid rgba(var(--color-primary-rgb), 0.8);
+        outline-offset: 4px;
+      }
+
+      #sound-toggle:focus-visible {
+        outline: 3px solid rgba(var(--color-secondary-rgb), 0.8);
         outline-offset: 4px;
       }
 
@@ -254,7 +277,7 @@
 
       .player-result.graph-container {
         max-width: 100%;
-        overflow-x: auto;
+        overflow-x: hidden;
       }
 
       .player-result {
@@ -308,6 +331,27 @@
         margin-bottom: 1rem;
       }
 
+      @keyframes streakPulse {
+        0%, 100% {
+          text-shadow: 0 0 6px rgba(255, 140, 0, 0.65), 0 0 14px rgba(255, 69, 0, 0.35);
+          transform: scale(1);
+        }
+        50% {
+          text-shadow: 0 0 10px rgba(255, 170, 0, 0.95), 0 0 24px rgba(255, 80, 0, 0.65);
+          transform: scale(1.02);
+        }
+      }
+
+      .player-streak {
+        margin-top: 0.85rem;
+        margin-bottom: 0;
+        font-size: 0.62rem;
+        color: #ffb347;
+        letter-spacing: 0.02em;
+        text-transform: uppercase;
+        animation: streakPulse 1.8s ease-in-out infinite;
+      }
+
       .graph {
         display: flex;
         gap: 2px;
@@ -340,6 +384,59 @@
         position: relative;
       }
 
+      .contribution-legend {
+        margin-top: 1.1rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+
+      .legend-label {
+        font-size: 0.58rem;
+        color: #c3c3d4;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
+      .legend-scale {
+        display: flex;
+        align-items: center;
+        gap: 0.25rem;
+      }
+
+      .legend-color {
+        width: 12px;
+        height: 12px;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 0 6px rgba(0, 0, 0, 0.35);
+      }
+
+      .share-controls {
+        margin-top: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.55rem;
+      }
+
+      #share-results {
+        margin: 0;
+        opacity: 1;
+        animation: none;
+      }
+
+      #share-confirmation {
+        min-height: 1rem;
+        margin: 0;
+        font-size: 0.55rem;
+        color: #9affb6;
+        text-shadow: 0 0 6px rgba(154, 255, 182, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+
       @keyframes vsShift {
         0% { background-position: 0% 50%; transform: scale(1); filter: drop-shadow(0 0 5px rgba(var(--color-secondary-rgb), 0.4)); }
         50% { background-position: 100% 50%; transform: scale(1.4); filter: drop-shadow(0 0 15px rgba(207, 34, 46, 0.8)) drop-shadow(0 0 30px rgba(var(--color-secondary-rgb), 1)); }
@@ -356,6 +453,64 @@
         color: transparent;
         -webkit-background-clip: text;
         animation: vsShift 1.5s ease-in-out infinite;
+      }
+
+      @keyframes winnerEntrance {
+        0% {
+          opacity: 0;
+          transform: translateY(-18px) scale(0.88);
+        }
+        60% {
+          opacity: 1;
+          transform: translateY(2px) scale(1.04);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes winnerGlow {
+        0%, 100% {
+          box-shadow: 0 0 10px rgba(var(--color-primary-rgb), 0.3), 0 0 30px rgba(var(--color-secondary-rgb), 0.25);
+        }
+        50% {
+          box-shadow: 0 0 18px rgba(var(--color-primary-rgb), 0.6), 0 0 45px rgba(var(--color-secondary-rgb), 0.45);
+        }
+      }
+
+      @keyframes textFlicker {
+        0%, 100% { opacity: 1; }
+        48% { opacity: 1; }
+        49% { opacity: 0.92; }
+        50% { opacity: 1; }
+      }
+
+      .winner-banner {
+        margin: 0 0 1.5rem;
+        padding: 0.85rem 1rem;
+        border: 2px solid var(--color-primary);
+        background: linear-gradient(
+          120deg,
+          rgba(var(--color-primary-rgb), 0.12),
+          rgba(var(--color-secondary-rgb), 0.2),
+          rgba(var(--color-primary-rgb), 0.12)
+        );
+        color: #fff;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        text-shadow: 0 0 6px rgba(var(--color-primary-rgb), 0.8), 0 0 14px rgba(var(--color-secondary-rgb), 0.6);
+        animation: winnerEntrance 0.7s ease-out, winnerGlow 2.2s ease-in-out infinite, textFlicker 2.8s linear infinite;
+      }
+
+      .winner-banner.tie {
+        border-color: var(--color-secondary);
+        background: linear-gradient(
+          120deg,
+          rgba(var(--color-secondary-rgb), 0.15),
+          rgba(var(--color-primary-rgb), 0.16),
+          rgba(var(--color-secondary-rgb), 0.15)
+        );
       }
 
       .error {
@@ -375,6 +530,138 @@
       
       .loading-text {
         animation: loadingColorShift 1s infinite;
+      }
+
+      @keyframes countdownFlash {
+        0% {
+          opacity: 0;
+          transform: scale(0.7);
+          text-shadow: 0 0 8px rgba(var(--color-primary-rgb), 0.5);
+        }
+        30% {
+          opacity: 1;
+          transform: scale(1.08);
+          text-shadow: 0 0 14px rgba(var(--color-primary-rgb), 0.8), 0 0 30px rgba(var(--color-secondary-rgb), 0.55);
+        }
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      @keyframes battleRevealSlide {
+        0% {
+          opacity: 0;
+          transform: translateY(18px) scale(0.98);
+          filter: blur(1px);
+        }
+        100% {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          filter: blur(0);
+        }
+      }
+
+      #countdown-overlay {
+        position: fixed;
+        inset: 0;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at center, rgba(10, 10, 26, 0.85), rgba(10, 10, 26, 0.97));
+        z-index: 2000;
+        pointer-events: none;
+      }
+
+      #countdown-overlay.active {
+        display: flex;
+      }
+
+      #countdown-text {
+        margin: 0;
+        font-size: clamp(2rem, 8vw, 5rem);
+        color: #fff;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        animation: countdownFlash 0.85s ease-out both;
+      }
+
+      #countdown-text.fight {
+        color: #ffd447;
+        text-shadow: 0 0 10px rgba(255, 212, 71, 0.9), 0 0 28px rgba(var(--color-secondary-rgb), 0.75);
+      }
+
+      .battle-reveal {
+        animation: battleRevealSlide 0.7s ease-out both;
+      }
+
+      .history-section {
+        margin-top: 2rem;
+        border: 2px solid var(--color-secondary);
+        background: #111122;
+        padding: 1rem;
+        text-align: left;
+        box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8);
+      }
+
+      .history-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .history-title {
+        margin: 0;
+        color: var(--color-primary);
+        font-size: 0.9rem;
+        text-transform: uppercase;
+        text-shadow: 0 0 6px rgba(var(--color-primary-rgb), 0.7);
+      }
+
+      #clear-history {
+        width: auto;
+        margin: 0;
+        padding: 0.55rem 0.8rem;
+        opacity: 1;
+        animation: none;
+        font-size: 0.56rem;
+      }
+
+      .history-empty {
+        margin: 0;
+        color: #bbb;
+        font-size: 0.6rem;
+      }
+
+      .history-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 0.7rem;
+      }
+
+      .history-item {
+        border: 1px solid rgba(var(--color-primary-rgb), 0.45);
+        background: rgba(var(--color-primary-rgb), 0.07);
+        padding: 0.7rem;
+      }
+
+      .history-main {
+        margin: 0;
+        color: #fff;
+        font-size: 0.58rem;
+        line-height: 1.7;
+        text-transform: uppercase;
+      }
+
+      .history-meta {
+        margin: 0.4rem 0 0;
+        color: #9aa;
+        font-size: 0.52rem;
       }
 
       /* ===== RESPONSIVE MEDIA QUERIES ===== */
@@ -420,6 +707,13 @@
         
         h3 {
           font-size: 1rem;
+        }
+
+        .winner-banner {
+          font-size: 0.75rem;
+          line-height: 1.5;
+          padding: 0.75rem;
+          margin-bottom: 1rem;
         }
         
         /* Stack inputs vertically */
@@ -479,10 +773,44 @@
           overflow-x: auto;
           -webkit-overflow-scrolling: touch;
         }
+
+        .history-header {
+          flex-direction: column;
+          align-items: stretch;
+        }
+
+        #clear-history {
+          width: 100%;
+        }
+
+        .history-title {
+          font-size: 0.75rem;
+        }
+
+        .history-main {
+          font-size: 0.52rem;
+        }
+
+        .history-meta {
+          font-size: 0.48rem;
+        }
         
         .graph-day {
           width: 8px;
           height: 8px;
+        }
+
+        .legend-label {
+          font-size: 0.5rem;
+        }
+
+        .legend-color {
+          width: 10px;
+          height: 10px;
+        }
+
+        #share-confirmation {
+          font-size: 0.48rem;
         }
       }
       
@@ -499,6 +827,10 @@
         h2 {
           font-size: 0.6rem;
           margin-bottom: 1.5rem;
+        }
+
+        .winner-banner {
+          font-size: 0.62rem;
         }
         
         input {
@@ -524,6 +856,10 @@
   </head>
   <body>
     <button id="theme-toggle" title="Toggle color theme" aria-label="Toggle color theme">🎨 Blue/Orange</button>
+    <button id="sound-toggle" title="Toggle sound effects" aria-label="Toggle sound effects">🔊 Sound On</button>
+    <div id="countdown-overlay" aria-hidden="true">
+      <p id="countdown-text">3...</p>
+    </div>
     <h1>Mona Mayhem</h1>
     <h2>GitHub Contribution Battle Arena</h2>
     
@@ -547,6 +883,15 @@
       <p>Enter two usernames to start the battle!</p>
     </div>
 
+    <section class="history-section" aria-label="Recent battle history">
+      <div class="history-header">
+        <h3 class="history-title">Recent Battles</h3>
+        <button id="clear-history" type="button">Clear History</button>
+      </div>
+      <p id="history-empty" class="history-empty">No battles yet. Fight your first battle!</p>
+      <ul id="history-list" class="history-list" aria-live="polite"></ul>
+    </section>
+
     <script>
       interface ContributionDay {
         weekday: number;
@@ -569,8 +914,28 @@
         error?: string;
       }
 
+      interface BattleHistoryItem {
+        player1: string;
+        player2: string;
+        score1: number;
+        score2: number;
+        winner: string;
+        battledAt: string;
+      }
+
       const form = document.getElementById('battle-form') as HTMLFormElement;
       const resultsArea = document.getElementById('results-area') as HTMLDivElement;
+      const historyList = document.getElementById('history-list') as HTMLUListElement;
+      const historyEmpty = document.getElementById('history-empty') as HTMLParagraphElement;
+      const clearHistoryButton = document.getElementById('clear-history') as HTMLButtonElement;
+      const soundToggle = document.getElementById('sound-toggle') as HTMLButtonElement;
+      const countdownOverlay = document.getElementById('countdown-overlay') as HTMLDivElement;
+      const countdownText = document.getElementById('countdown-text') as HTMLParagraphElement;
+      const battleHistoryStorageKey = 'mona-battle-history';
+      const soundMutedStorageKey = 'mona-sound-muted';
+
+      let audioContext: AudioContext | null = null;
+      let isMuted = localStorage.getItem(soundMutedStorageKey) === 'true';
 
       function validateUsername(username: string): string | null {
         if (!username || username.trim() === '') {
@@ -636,6 +1001,268 @@
         return graphHtml;
       }
 
+      function calculateLongestStreak(data: ContributionsData): number {
+        if (!data.weeks || data.weeks.length === 0) {
+          return 0;
+        }
+
+        const days: { date: Date; count: number }[] = [];
+
+        for (const week of data.weeks) {
+          const firstDayDate = new Date(week.first_day + 'T00:00:00Z');
+          for (const day of week.contribution_days) {
+            const currentDate = new Date(firstDayDate);
+            currentDate.setUTCDate(currentDate.getUTCDate() + day.weekday);
+            days.push({ date: currentDate, count: day.count });
+          }
+        }
+
+        days.sort((a, b) => a.date.getTime() - b.date.getTime());
+
+        let longestStreak = 0;
+        let currentStreak = 0;
+        let previousDate: Date | null = null;
+
+        for (const day of days) {
+          if (day.count > 0) {
+            if (previousDate) {
+              const dayDiff = Math.round((day.date.getTime() - previousDate.getTime()) / 86400000);
+              currentStreak = dayDiff === 1 ? currentStreak + 1 : 1;
+            } else {
+              currentStreak = 1;
+            }
+            longestStreak = Math.max(longestStreak, currentStreak);
+          } else {
+            currentStreak = 0;
+          }
+          previousDate = day.date;
+        }
+
+        return longestStreak;
+      }
+
+      function renderContributionLegend(colors: string[] | undefined): string {
+        if (!colors || colors.length === 0) {
+          return '';
+        }
+
+        const scale = colors
+          .map((color, index) => `<span class="legend-color" style="background-color: ${color};" title="Contribution level ${index}"></span>`)
+          .join('');
+
+        return `
+          <div class="contribution-legend" aria-label="Contribution color legend">
+            <span class="legend-label">Less</span>
+            <div class="legend-scale">${scale}</div>
+            <span class="legend-label">More</span>
+          </div>
+        `;
+      }
+
+      function buildBattleSummary(player1: string, score1: number, player2: string, score2: number, winner: string): string {
+        return [
+          'Mona Mayhem Battle Results',
+          `${player1}: ${score1} contribs`,
+          `${player2}: ${score2} contribs`,
+          `Winner: ${winner}`
+        ].join('\n');
+      }
+
+      function setupShareResults(summaryText: string): void {
+        const shareButton = document.getElementById('share-results') as HTMLButtonElement | null;
+        const shareConfirmation = document.getElementById('share-confirmation') as HTMLParagraphElement | null;
+
+        if (!shareButton || !shareConfirmation) {
+          return;
+        }
+
+        shareButton.addEventListener('click', async () => {
+          try {
+            await navigator.clipboard.writeText(summaryText);
+            shareConfirmation.textContent = 'Copied to clipboard!';
+            setTimeout(() => {
+              shareConfirmation.textContent = '';
+            }, 1600);
+          } catch {
+            shareConfirmation.textContent = 'Copy failed. Please try again.';
+            setTimeout(() => {
+              shareConfirmation.textContent = '';
+            }, 1800);
+          }
+        });
+      }
+
+      function loadBattleHistory(): BattleHistoryItem[] {
+        try {
+          const rawHistory = localStorage.getItem(battleHistoryStorageKey);
+          if (!rawHistory) {
+            return [];
+          }
+
+          const parsedHistory = JSON.parse(rawHistory);
+          if (!Array.isArray(parsedHistory)) {
+            return [];
+          }
+
+          return parsedHistory as BattleHistoryItem[];
+        } catch {
+          return [];
+        }
+      }
+
+      function saveBattleHistory(history: BattleHistoryItem[]): void {
+        localStorage.setItem(battleHistoryStorageKey, JSON.stringify(history.slice(0, 10)));
+      }
+
+      function renderBattleHistory(): void {
+        const history = loadBattleHistory();
+
+        if (history.length === 0) {
+          historyEmpty.style.display = 'block';
+          historyList.innerHTML = '';
+          return;
+        }
+
+        historyEmpty.style.display = 'none';
+        historyList.innerHTML = history
+          .slice(0, 10)
+          .map((battle) => {
+            const winnerText = battle.winner === 'TIE' ? "IT'S A TIE" : `${battle.winner} WINS`;
+            const playedAt = new Date(battle.battledAt).toLocaleString();
+
+            return `
+              <li class="history-item">
+                <p class="history-main">${battle.player1} (${battle.score1}) vs ${battle.player2} (${battle.score2}) | 🏆 ${winnerText}</p>
+                <p class="history-meta">${playedAt}</p>
+              </li>
+            `;
+          })
+          .join('');
+      }
+
+      function addBattleToHistory(item: BattleHistoryItem): void {
+        const history = loadBattleHistory();
+        history.unshift(item);
+        saveBattleHistory(history);
+        renderBattleHistory();
+      }
+
+      function updateSoundToggleText(): void {
+        soundToggle.textContent = isMuted ? '🔇 Sound Off' : '🔊 Sound On';
+      }
+
+      function getAudioContext(): AudioContext | null {
+        if (isMuted) {
+          return null;
+        }
+
+        if (!audioContext) {
+          const AudioContextClass = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+          if (!AudioContextClass) {
+            return null;
+          }
+          audioContext = new AudioContextClass();
+        }
+
+        if (audioContext.state === 'suspended') {
+          void audioContext.resume();
+        }
+
+        return audioContext;
+      }
+
+      function playOscTone(
+        ctx: AudioContext,
+        startTime: number,
+        frequency: number,
+        duration: number,
+        type: OscillatorType,
+        peakGain: number,
+        endFrequency?: number
+      ): void {
+        const oscillator = ctx.createOscillator();
+        const gainNode = ctx.createGain();
+
+        oscillator.type = type;
+        oscillator.frequency.setValueAtTime(frequency, startTime);
+        if (endFrequency && endFrequency > 0) {
+          oscillator.frequency.exponentialRampToValueAtTime(endFrequency, startTime + duration);
+        }
+
+        gainNode.gain.setValueAtTime(0.0001, startTime);
+        gainNode.gain.exponentialRampToValueAtTime(peakGain, startTime + 0.01);
+        gainNode.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+        oscillator.connect(gainNode);
+        gainNode.connect(ctx.destination);
+
+        oscillator.start(startTime);
+        oscillator.stop(startTime + duration);
+      }
+
+      function playCoinInsertSound(): void {
+        const ctx = getAudioContext();
+        if (!ctx) {
+          return;
+        }
+
+        const now = ctx.currentTime + 0.01;
+        playOscTone(ctx, now, 880, 0.08, 'square', 0.06);
+        playOscTone(ctx, now + 0.09, 1320, 0.11, 'square', 0.07);
+      }
+
+      function playPowerUpSound(): void {
+        const ctx = getAudioContext();
+        if (!ctx) {
+          return;
+        }
+
+        const now = ctx.currentTime + 0.01;
+        playOscTone(ctx, now, 294, 0.1, 'triangle', 0.045);
+        playOscTone(ctx, now + 0.08, 392, 0.1, 'triangle', 0.05);
+        playOscTone(ctx, now + 0.16, 523, 0.12, 'triangle', 0.055);
+        playOscTone(ctx, now + 0.25, 784, 0.16, 'triangle', 0.06);
+      }
+
+      function playExplosionSound(): void {
+        const ctx = getAudioContext();
+        if (!ctx) {
+          return;
+        }
+
+        const now = ctx.currentTime + 0.01;
+        playOscTone(ctx, now, 220, 0.35, 'sawtooth', 0.07, 45);
+        playOscTone(ctx, now + 0.02, 165, 0.32, 'square', 0.05, 32);
+        playOscTone(ctx, now + 0.03, 110, 0.28, 'triangle', 0.05, 28);
+      }
+
+      function wait(ms: number): Promise<void> {
+        return new Promise((resolve) => {
+          setTimeout(resolve, ms);
+        });
+      }
+
+      async function playBattleCountdown(): Promise<void> {
+        const steps = ['3...', '2...', '1...', '⚡ FIGHT! ⚡'];
+        countdownOverlay.classList.add('active');
+
+        for (const step of steps) {
+          countdownText.textContent = step;
+          countdownText.classList.remove('fight');
+          if (step.includes('FIGHT')) {
+            countdownText.classList.add('fight');
+          }
+
+          countdownText.style.animation = 'none';
+          void countdownText.offsetWidth;
+          countdownText.style.animation = '';
+
+          await wait(1000);
+        }
+
+        countdownOverlay.classList.remove('active');
+      }
+
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
@@ -661,16 +1288,31 @@
             showFieldError('player2', p2Error);
           }
           resultsArea.innerHTML = '<p class="error">Please fix the errors above and try again.</p>';
+          playExplosionSound();
           return;
         }
         
         resultsArea.innerHTML = '<p class="loading-text">Let the battle begin... fetching data...</p>';
+        playCoinInsertSound();
 
         try {
-          const [res1, res2] = await Promise.all([
-            fetch(`/api/contributions/${p1}`),
-            fetch(`/api/contributions/${p2}`)
+          const [countdownResult, fetchResult] = await Promise.allSettled([
+            playBattleCountdown(),
+            Promise.all([
+              fetch(`/api/contributions/${p1}`),
+              fetch(`/api/contributions/${p2}`)
+            ])
           ]);
+
+          if (countdownResult.status === 'rejected') {
+            throw countdownResult.reason;
+          }
+
+          if (fetchResult.status === 'rejected') {
+            throw fetchResult.reason;
+          }
+
+          const [res1, res2] = fetchResult.value;
 
           const data1: ContributionsData = await res1.json();
           const data2: ContributionsData = await res2.json();
@@ -692,37 +1334,66 @@
               }
             }
             
-            resultsArea.innerHTML = errorHtml;
+            resultsArea.innerHTML = `<div class="battle-reveal">${errorHtml}</div>`;
+            playExplosionSound();
             return;
           }
 
           const score1 = data1.total_contributions || 0;
           const score2 = data2.total_contributions || 0;
+          const streak1 = calculateLongestStreak(data1);
+          const streak2 = calculateLongestStreak(data2);
 
-          let winnerText = "It's a Tie!";
-          if (score1 > score2) winnerText = `${p1} Wins!`;
-          if (score2 > score1) winnerText = `${p2} Wins!`;
+          const isTie = score1 === score2;
+          const winnerName = score1 > score2 ? p1 : p2;
+          const winnerText = isTie ? "🤝 IT'S A TIE! 🤝" : `🏆 ${winnerName} WINS! 🏆`;
+          const winnerClass = isTie ? 'winner-banner tie' : 'winner-banner';
+          const legendColors = data1.colors_full?.length ? data1.colors_full : data2.colors_full;
+          const winnerSummaryText = isTie ? "IT'S A TIE" : `${winnerName} WINS`;
+          const shareSummary = buildBattleSummary(p1, score1, p2, score2, winnerSummaryText);
+
+          addBattleToHistory({
+            player1: p1,
+            player2: p2,
+            score1,
+            score2,
+            winner: isTie ? 'TIE' : winnerName,
+            battledAt: new Date().toISOString()
+          });
 
           resultsArea.innerHTML = `
-            <h3>${winnerText}</h3>
-            <div class="results-grid">
-              <div class="player-result graph-container">
-                <h4>${p1}</h4>
-                <p class="player-score">${score1} contribs</p>
-                <p class="player-dates">${data1.from} to ${data1.to}</p>
-                ${renderGraph(data1)}
+            <div class="battle-reveal">
+              <h3 class="${winnerClass}">${winnerText}</h3>
+              <div class="results-grid">
+                <div class="player-result graph-container">
+                  <h4>${p1}</h4>
+                  <p class="player-score">${score1} contribs</p>
+                  <p class="player-dates">${data1.from} to ${data1.to}</p>
+                  ${renderGraph(data1)}
+                  <p class="player-streak">🔥 Longest Streak: ${streak1} days</p>
+                </div>
+                <div class="vs-badge">VS</div>
+                <div class="player-result graph-container">
+                  <h4>${p2}</h4>
+                  <p class="player-score">${score2} contribs</p>
+                  <p class="player-dates">${data2.from} to ${data2.to}</p>
+                  ${renderGraph(data2)}
+                  <p class="player-streak">🔥 Longest Streak: ${streak2} days</p>
+                </div>
               </div>
-              <div class="vs-badge">VS</div>
-              <div class="player-result graph-container">
-                <h4>${p2}</h4>
-                <p class="player-score">${score2} contribs</p>
-                <p class="player-dates">${data2.from} to ${data2.to}</p>
-                ${renderGraph(data2)}
+              ${renderContributionLegend(legendColors)}
+              <div class="share-controls">
+                <button id="share-results" type="button">📋 Share Results</button>
+                <p id="share-confirmation" aria-live="polite"></p>
               </div>
             </div>
           `;
+          setupShareResults(shareSummary);
+          playPowerUpSound();
         } catch (err) {
-          resultsArea.innerHTML = `<p class="error"><strong>Network Error:</strong> ${err instanceof Error ? err.message : 'Failed to connect to the server'}</p>`;
+          countdownOverlay.classList.remove('active');
+          resultsArea.innerHTML = `<div class="battle-reveal"><p class="error"><strong>Network Error:</strong> ${err instanceof Error ? err.message : 'Failed to connect to the server'}</p></div>`;
+          playExplosionSound();
         }
       });
 
@@ -748,6 +1419,23 @@
 
       // ===== THEME TOGGLE =====
       const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+
+      clearHistoryButton.addEventListener('click', () => {
+        localStorage.removeItem(battleHistoryStorageKey);
+        renderBattleHistory();
+      });
+
+      soundToggle.addEventListener('click', () => {
+        isMuted = !isMuted;
+        localStorage.setItem(soundMutedStorageKey, String(isMuted));
+        updateSoundToggleText();
+        if (!isMuted) {
+          playCoinInsertSound();
+        }
+      });
+
+      renderBattleHistory();
+      updateSoundToggleText();
 
       // Restore saved theme on load
       const savedTheme = localStorage.getItem('mona-theme');
