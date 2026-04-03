@@ -1,0 +1,1 @@
+fetch('http://localhost:4321/api/contributions/torvalds').then(r => r.json()).then(data => { let html = ''; for(let w of (data.weeks||[])) { for(let d of w.contribution_days) { html += d.level + ','; } } console.log(html.substring(0, 100)); });
